@@ -34,7 +34,11 @@ function CartItem({ item }) {
 
         <button
           className="amount-btn"
-          onClick={() => dispatch(decreaseProducts(item.id))}
+          onClick={() => {
+            item.amount === 1
+              ? dispatch(removeItem(item.id))
+              : dispatch(decreaseProducts(item.id));
+          }}
         >
           <ChevronDown />
         </button>

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import items from "../../cartItems";
+import { useSelector } from "react-redux";
 
 const initialState = {
   cartItems: items,
@@ -23,7 +24,7 @@ const cartSlice = createSlice({
       const cartItem = state.cartItems.find(
         (item) => item.id === action.payload
       );
-      if (cartItem.amount === 0) return;
+
       cartItem.amount = cartItem.amount - 1;
     },
 
@@ -38,10 +39,27 @@ const cartSlice = createSlice({
       );
       state.cartItems = updatedCartItems;
     },
+
+    calculateTotal(state, action) {
+      let amount = 0;
+      let total = 0;
+
+      state.cartItems.forEach((item) => {
+        amount += item.amount;
+        total += item.amount * item.price;
+      });
+      state.amount = amount;
+      state.total = total;
+    },
   },
 });
 
-export const { increaseProducts, decreaseProducts, clearCart, removeItem } =
-  cartSlice.actions;
+export const {
+  increaseProducts,
+  decreaseProducts,
+  clearCart,
+  removeItem,
+  calculateTotal,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
